@@ -59,4 +59,5 @@ npm-debug.log
 # --- Base de données locale (si tu montes un volume Docker en local) ---
 # Exemple : si dans docker-compose tu as mis "./pgdata:/var/lib/postgresql/data"
 pgdata/
+
 db-data/
