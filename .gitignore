@@ -1,0 +1,62 @@
+# --- Node.js (api-node) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json # Optionnel : certains préfèrent le versionner, d'autres non. Je conseille de le garder, mais si tu as des conflits, retire le #.
+.npm/
+
+# --- Python (worker-python) ---
+# Byte-compiled / Optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environnements virtuels (très important de ne pas push ça)
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+
+# Tests & Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# --- Variables d'environnement & Secrets (CRITIQUE) ---
+# Ne jamais pousser les mots de passe ou clés API sur GitHub
+.env
+.env.local
+.env.*.local
+! .env.example  # On garde le fichier d'exemple pour savoir quelles variables créer
+
+# --- IDE & Système d'exploitation ---
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# VS Code / JetBrains (WebStorm, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Docker & Logs ---
+docker-compose.override.yml
+*.log
+logs/
+npm-debug.log
+
+# --- Base de données locale (si tu montes un volume Docker en local) ---
+# Exemple : si dans docker-compose tu as mis "./pgdata:/var/lib/postgresql/data"
+pgdata/
+db-data/
