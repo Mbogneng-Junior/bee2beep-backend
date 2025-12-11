@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  api-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: node-api
+    container_name: bee2beep-api
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3000
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - WORKER_URL=${WORKER_URL}
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - ./api-node:/app/api-node
+      - /app/api-node/node_modules
+    networks:
+      - bee2beep-network
+
+  worker-python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: python-worker
+    container_name: bee2beep-worker
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_ENV=${NODE_ENV:-production}
+      - GREEN_API_INSTANCE_ID=${GREEN_API_INSTANCE_ID}
+      - GREEN_API_TOKEN=${GREEN_API_TOKEN}
+      - GREEN_API_HOST=${GREEN_API_HOST}
+    volumes:
+      - ./worker-python:/app/worker-python
+    networks:
+      - bee2beep-network
+
+networks:
+  bee2beep-network:

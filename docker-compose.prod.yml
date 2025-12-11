@@ -1,0 +1,40 @@
+services:
+  api-node:
+    build:
+      context: .
+      dockerfile: api-node/Dockerfile
+    container_name: bee2beep-api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_USER=${DB_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_SSL=true
+      - JWT_SECRET=${JWT_SECRET}
+      - WORKER_URL=http://worker-python:5000
+    depends_on:
+      - worker-python
+    networks:
+      - bee2beep-network
+
+  worker-python:
+    build:
+      context: .
+      dockerfile: worker-python/Dockerfile
+    container_name: bee2beep-worker
+    restart: always
+    environment:
+      - GREEN_API_INSTANCE_ID=${GREEN_API_INSTANCE_ID}
+      - GREEN_API_TOKEN=${GREEN_API_TOKEN}
+      - GREEN_API_HOST=${GREEN_API_HOST}
+    networks:
+      - bee2beep-network
+
+networks:
+  bee2beep-network:
+    driver: bridge
