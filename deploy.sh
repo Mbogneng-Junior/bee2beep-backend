@@ -5,7 +5,7 @@ DROPLET_IP="167.71.176.127"
 USER="root"
 REMOTE_DIR="/var/www/bee2beep-backend"
 REPO_URL="https://github.com/Mbogneng-Junior/bee2beep-backend.git"
-BRANCH="master"
+BRANCH="main"
 
 echo "🚀 Déploiement vers $DROPLET_IP via Git..."
 
@@ -13,16 +13,22 @@ echo "🚀 Déploiement vers $DROPLET_IP via Git..."
 ssh $USER@$DROPLET_IP << EOF
     # Création du dossier si inexistant
     mkdir -p $REMOTE_DIR
+    cd $REMOTE_DIR
     
     # Vérification si le dépôt existe déjà
-    if [ -d "$REMOTE_DIR/.git" ]; then
+    if [ -d ".git" ]; then
         echo "📂 Le dépôt existe déjà. Mise à jour..."
-        cd $REMOTE_DIR
-        git pull origin $BRANCH
+        # On force le reset pour écraser les modifications locales (comme docker-compose.prod.yml qui bloque)
+        git fetch origin
+        git reset --hard origin/$BRANCH
     else
-        echo "wm Clonage du dépôt..."
-        git clone $REPO_URL $REMOTE_DIR
-        cd $REMOTE_DIR
+        echo "wm Initialisation du dépôt..."
+        # Le dossier existe déjà (car on a créé .env), donc git clone échoue.
+        # On initialise git manuellement.
+        git init
+        git remote add origin $REPO_URL
+        git fetch origin
+        git reset --hard origin/$BRANCH
     fi
 EOF
 

@@ -18,7 +18,12 @@ const userRoutes = require('./src/routes/v1/user.routes');
 const app = express();
 
 // Middlewares
-app.use(helmet());
+// Helmet sécurise les en-têtes HTTP, mais peut bloquer Swagger UI s'il est trop strict (CSP)
+// On désactive la CSP pour l'instant pour permettre à Swagger de charger ses scripts/styles
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 app.use(cors());
 app.use(express.json());
 
