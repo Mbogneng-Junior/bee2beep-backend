@@ -17,6 +17,10 @@ const options = {
         url: 'http://localhost:3000/api/v1',
         description: 'Serveur de développement',
       },
+      {
+        url: 'http://167.71.176.127:3000/api/v1',
+        description: 'Serveur de Production',
+      },
     ],
     components: {
       securitySchemes: {
